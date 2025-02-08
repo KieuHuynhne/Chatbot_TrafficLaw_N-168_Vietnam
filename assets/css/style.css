@@ -171,7 +171,7 @@ html {
 
 .user_info p {
 	font-size: 10px;
-	color: rgba(255, 255, 255, 0.6);
+	color: rgb(249, 248, 248);
 }
 
 .video_cam {
@@ -313,10 +313,15 @@ html {
 	height: 400px;
 	/* Chiều cao cố định */
 	overflow-y: auto;
-	/* Bật cuộn dọc khi nội dung quá nhiều */
+	/* Bật cuộn dọc nếu nội dung quá dài */
+	background-color: #ffffff;
+	/* Màu nền trắng */
 	padding: 10px;
-	background-color: #f8f9fa;
-	/* Màu nền nhẹ */
+	display: flex;
+	flex-direction: column;
+	/* Hiển thị nội dung theo cột */
+	gap: 10px;
+	/* Khoảng cách giữa các tin nhắn */
 }
 
 /* Tin nhắn người nhận */
@@ -352,4 +357,25 @@ html {
 	background-color: #78e08f;
 	/* Màu xanh lá cho tin nhắn người gửi */
 	text-align: right;
+}
+
+.suggestions {
+	display: flex;
+	justify-content: center;
+	/* Căn giữa các nút gợi ý */
+	gap: 10px;
+	/* Khoảng cách giữa các nút */
+}
+
+.suggestion-btn {
+	padding: 5px 15px;
+	font-size: 14px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.suggestion-btn:hover {
+	background-color: #007bff;
+	color: #fff;
 }

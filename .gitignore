@@ -5,8 +5,6 @@ venv/
 __pycache__/
 *.py[cod]
 
-# Ignore model files if not necessary
-models/
 
 # Ignore log and temporary files
 *.log

@@ -1,12 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
+from transformers import AutoModelForSeq2SeqLM, AutoModelForCausalLM, AutoTokenizer, pipeline
 import torch
 
 # Tạo ứng dụng FastAPI
 app = FastAPI()
-
 
 # Cấu hình CORS
 app.add_middleware(
@@ -17,33 +16,71 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Đường dẫn tới mô hình
-model_path = "models/vit5_finetuned_QA"
+# Đường dẫn tới các mô hình
+models = {
+    "t5": "models/vit5_finetuned_QA",
+    "gpt2": "models/gpt2_finetuned_vi",
+    "phobert": "models/phobert_finetuned"
+}
 
-# Load mô hình và tokenizer
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
+# Cache các pipeline đã tải
+loaded_pipelines = {}
 
-# Tạo pipeline với các tham số tối ưu
-qa_pipeline = pipeline(
-    "text2text-generation",
-    model=model,
-    tokenizer=tokenizer,
-    max_length=128,  # Đặt giới hạn chiều dài của câu trả lời
-    num_beams=5,     # Beam search để tăng chất lượng câu trả lời
-    early_stopping=True  # Dừng sớm nếu đạt kết quả tốt nhất
-)
+def load_pipeline(model_name):
+    """
+    Hàm tải pipeline cho mô hình tương ứng.
+    """
+    if model_name not in loaded_pipelines:
+        if model_name not in models:
+            raise ValueError(f"Model {model_name} không được hỗ trợ.")
+        
+        tokenizer = AutoTokenizer.from_pretrained(models[model_name])
+
+        # Kiểm tra loại mô hình để tải đúng class
+        if model_name == "t5":  # Mô hình Seq2Seq như T5
+            model = AutoModelForSeq2SeqLM.from_pretrained(models[model_name])
+            loaded_pipelines[model_name] = pipeline(
+                "text2text-generation",
+                model=model,
+                tokenizer=tokenizer,
+                max_length=128,
+                num_beams=5,
+                early_stopping=True,
+            )
+        elif model_name == "gpt2":  # Mô hình causal như GPT-2
+            model = AutoModelForCausalLM.from_pretrained(models[model_name])
+            loaded_pipelines[model_name] = pipeline(
+                "text-generation",
+                model=model,
+                tokenizer=tokenizer,
+                max_length=128,
+                num_return_sequences=1,
+            )
+        else:
+            raise ValueError(f"Model {model_name} không được hỗ trợ.")
+    
+    return loaded_pipelines[model_name]
 
 # Định nghĩa input schema
 class QuestionRequest(BaseModel):
     question: str
+    model: str  # Tên mô hình, ví dụ: "t5", "gpt2", "phobert"
 
 @app.post("/ask")
 async def answer_question(request: QuestionRequest):
-    # Sử dụng pipeline để sinh câu trả lời
-    output = qa_pipeline(request.question)
-    answer = output[0]["generated_text"]  # Lấy câu trả lời từ output
+    """
+    Endpoint nhận câu hỏi và mô hình để sinh câu trả lời.
+    """
+    # Load pipeline cho mô hình được chọn
+    qa_pipeline = load_pipeline(request.model)
+    
+    if request.model == "gpt2":
+        # GPT-2 sinh output khác với Seq2Seq
+        output = qa_pipeline(request.question, max_length=128, num_return_sequences=1)
+        answer = output[0]["generated_text"]
+    else:
+        # T5 hoặc mô hình Seq2Seq khác
+        output = qa_pipeline(request.question)
+        answer = output[0]["generated_text"]
+    
     return {"answer": answer}
-
-# Chạy ứng dụng (sử dụng khi phát triển cục bộ)
-# uvicorn app:app --host 0.0.0.0 --port 8000 --reload
