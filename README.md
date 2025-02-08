@@ -30,13 +30,15 @@
 ---
 
 ### **2. Chuẩn bị mô hình**
-1. Tải các mô hình đã huấn luyện (`T5`, `GPT-2`, `PhoBERT`) và đặt vào thư mục `models`. Cấu trúc thư mục:
+1. Tải các mô hình đã huấn luyện (`T5`, `GPT-2`, `PhoBERT`), giải nén và đặt vào thư mục `models`. Cấu trúc thư mục:
    ```
    models/
    ├── vit5_finetuned_QA/
    ├── gpt2_finetuned/
    └── phobert_finetuned/
    ```
+   Link tải model: https://drive.google.com/drive/folders/1oGd39mldBDEmp3SFq022nTPhe8Yols_i?usp=sharing
+   
 2. Đảm bảo mỗi thư mục mô hình chứa đầy đủ các file như `config.json`, `pytorch_model.bin`, `tokenizer.json`, v.v.
 
 ---
