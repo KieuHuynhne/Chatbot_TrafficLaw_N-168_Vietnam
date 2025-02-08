@@ -6,9 +6,12 @@ html {
 	background: -webkit-linear-gradient(to right, #7cd062, #a8f598, #adf0b3);
 	background: linear-gradient(to right, #d8f7ce, #c5f8c5b6, #48a42395);
 	background-image: url('cs.png');
-	background-size: cover; /* Căn chỉnh kích thước */
-    background-position: center; /* Căn giữa */
-    background-repeat: no-repeat; /* Không lặp lại */
+	background-size: cover;
+	/* Căn chỉnh kích thước */
+	background-position: center;
+	/* Căn giữa */
+	background-repeat: no-repeat;
+	/* Không lặp lại */
 
 }
 
@@ -30,7 +33,13 @@ html {
 }
 
 .msg_card_body {
+	height: 400px;
+	/* Đặt chiều cao cố định */
 	overflow-y: auto;
+	/* Bật cuộn dọc khi nội dung quá nhiều */
+	padding: 10px;
+	background-color: #f8f9fa;
+	/* Màu nền nhẹ */
 }
 
 .card-header {
@@ -188,14 +197,21 @@ html {
 }
 
 .msg_cotainer_send {
-	margin-top: auto;
-	margin-bottom: auto;
-	margin-right: 10px;
-	border-radius: 25px;
-	background-color: #78e08f;
+	max-width: 75%;
+	/* Giới hạn chiều rộng tối đa để tránh tràn màn hình */
+	word-wrap: break-word;
+	/* Tự động xuống dòng khi từ quá dài */
+	white-space: pre-wrap;
+	/* Bảo toàn khoảng trắng và xuống dòng nếu cần */
 	padding: 10px;
-	position: relative;
+	border-radius: 15px;
+	margin-bottom: 5px;
+	font-size: 14px;
+	color: #fff;
+	background-color: #82ccdd;
+	/* Màu cho tin nhắn người nhận */
 }
+
 
 .msg_time {
 	position: absolute;
@@ -206,11 +222,9 @@ html {
 }
 
 .msg_time_send {
-	position: absolute;
-	right: 0;
-	bottom: -15px;
-	color: rgba(255, 255, 255, 0.5);
-	font-size: 10px;
+	background-color: #78e08f;
+	/* Màu cho tin nhắn người gửi */
+	text-align: right;
 }
 
 .msg_head {
@@ -291,4 +305,51 @@ html {
 	.contacts_card {
 		margin-bottom: 15px !important;
 	}
+}
+
+
+/* Khung chứa tin nhắn */
+.msg_card_body {
+	height: 400px;
+	/* Chiều cao cố định */
+	overflow-y: auto;
+	/* Bật cuộn dọc khi nội dung quá nhiều */
+	padding: 10px;
+	background-color: #f8f9fa;
+	/* Màu nền nhẹ */
+}
+
+/* Tin nhắn người nhận */
+.msg_cotainer {
+	max-width: 75%;
+	/* Giới hạn chiều rộng */
+	word-wrap: break-word;
+	/* Tự động xuống dòng */
+	white-space: pre-wrap;
+	/* Bảo toàn khoảng trắng */
+	padding: 10px;
+	border-radius: 15px;
+	margin-bottom: 5px;
+	font-size: 14px;
+	color: #fff;
+	background-color: #82ccdd;
+	/* Màu xanh cho tin nhắn người nhận */
+}
+
+/* Tin nhắn người gửi */
+.msg_cotainer_send {
+	max-width: 75%;
+	/* Giới hạn chiều rộng */
+	word-wrap: break-word;
+	/* Tự động xuống dòng */
+	white-space: pre-wrap;
+	/* Bảo toàn khoảng trắng */
+	padding: 10px;
+	border-radius: 15px;
+	margin-bottom: 5px;
+	font-size: 14px;
+	color: #fff;
+	background-color: #78e08f;
+	/* Màu xanh lá cho tin nhắn người gửi */
+	text-align: right;
 }
