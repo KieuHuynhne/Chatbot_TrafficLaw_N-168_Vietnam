@@ -30,12 +30,12 @@
 ---
 
 ### **2. Chuẩn bị mô hình**
-1. Tải các mô hình đã huấn luyện (`T5`, `GPT-2`, `PhoBERT`), giải nén và đặt vào thư mục `models`. Cấu trúc thư mục:
+1. Tải các mô hình đã huấn luyện (`T5`, `GPT-2`, `BARTpho`), giải nén và đặt vào thư mục `models`. Cấu trúc thư mục:
    ```
    models/
    ├── vit5_finetuned_QA/
    ├── gpt2_finetuned/
-   └── phobert_finetuned/
+   └── bartpho-qa/
    ```
    Link tải model: https://drive.google.com/drive/folders/1oGd39mldBDEmp3SFq022nTPhe8Yols_i?usp=sharing
    
@@ -80,8 +80,8 @@
 ---
 
 ## **Góp ý và liên hệ**
-Nếu bạn gặp vấn đề hoặc cần hỗ trợ, hãy liên hệ qua email.
-Email: knnhuynh03@gmail.com
+Nếu bạn gặp vấn đề hoặc cần hỗ trợ, hãy liên hệ qua email. Email: knnhuynh03@gmail.com
+
 ---
 
-Chúc bạn sử dụng chatbot thành công! 🚀
+Chúc bạn sử dụng chatbot thành công! 

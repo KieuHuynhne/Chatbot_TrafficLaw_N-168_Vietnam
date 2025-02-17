@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from transformers import AutoModelForSeq2SeqLM, AutoModelForCausalLM, AutoTokenizer, pipeline
 import torch
+import sentencepiece
+
 
 # Tạo ứng dụng FastAPI
 app = FastAPI()
@@ -20,8 +22,19 @@ app.add_middleware(
 models = {
     "t5": "models/vit5_finetuned_QA",
     "gpt2": "models/gpt2_finetuned_vi",
-    "phobert": "models/phobert_finetuned"
+    "bartpho": "models/bartpho-qa"
 }
+from transformers import AutoTokenizer
+
+# Tải tokenizer nếu chưa có trong checkpoint Bartpho
+import os
+bartpho_checkpoint = "models/bartpho-qa/checkpoint-1194"
+if not os.path.exists(os.path.join(bartpho_checkpoint, "tokenizer.json")):
+    print("🔹 Không tìm thấy tokenizer cho Bartpho, đang tải lại từ Hugging Face...")
+    tokenizer = AutoTokenizer.from_pretrained("vinai/bartpho-word")
+    tokenizer.save_pretrained(bartpho_checkpoint)
+    print("✅ Đã tải và lưu tokenizer vào checkpoint")
+
 
 # Cache các pipeline đã tải
 loaded_pipelines = {}
@@ -37,7 +50,7 @@ def load_pipeline(model_name):
         tokenizer = AutoTokenizer.from_pretrained(models[model_name])
 
         # Kiểm tra loại mô hình để tải đúng class
-        if model_name == "t5":  # Mô hình Seq2Seq như T5
+        if model_name == "t5" or model_name == "bartpho":  # Mô hình Seq2Seq như T5
             model = AutoModelForSeq2SeqLM.from_pretrained(models[model_name])
             loaded_pipelines[model_name] = pipeline(
                 "text2text-generation",
@@ -64,7 +77,7 @@ def load_pipeline(model_name):
 # Định nghĩa input schema
 class QuestionRequest(BaseModel):
     question: str
-    model: str  # Tên mô hình, ví dụ: "t5", "gpt2", "phobert"
+    model: str  
 
 @app.post("/ask")
 async def answer_question(request: QuestionRequest):
