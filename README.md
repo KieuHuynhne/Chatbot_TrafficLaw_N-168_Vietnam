@@ -1,7 +1,7 @@
 
 # Chatbot Luật Giao Thông
 
-Ứng dụng chatbot hỏi đáp về luật giao thông, sử dụng các mô hình như T5, GPT-2 và PhoBERT để trả lời câu hỏi.
+Ứng dụng chatbot hỏi đáp về luật giao thông, sử dụng các mô hình như T5, GPT-2 và BARTpho để trả lời câu hỏi.
 
 ---
 
