@@ -82,6 +82,4 @@
 ## **Góp ý và liên hệ**
 Nếu bạn gặp vấn đề hoặc cần hỗ trợ, hãy liên hệ qua email. Email: knnhuynh03@gmail.com
 
----
 
-Chúc bạn sử dụng chatbot thành công! 
